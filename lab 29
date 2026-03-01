@@ -1,0 +1,27 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+df = pd.read_csv(r"C:\Users\Admin\Downloads\day29_correlations (1).csv")
+
+corr = df.corr()
+print(corr)
+
+plt.figure()
+sns.heatmap(corr, annot=True)
+plt.show()
+
+corr_no_diag = corr.copy()
+np.fill_diagonal(corr_no_diag.values, 0)
+
+strong_pair = corr_no_diag.abs().unstack().idxmax()
+weak_pair = corr_no_diag.abs().unstack().idxmin()
+
+plt.figure()
+sns.scatterplot(x=strong_pair[0], y=strong_pair[1], data=df)
+plt.show()
+
+plt.figure()
+sns.scatterplot(x=weak_pair[0], y=weak_pair[1], data=df)
+plt.show()
