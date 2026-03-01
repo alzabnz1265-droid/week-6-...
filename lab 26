@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv(r"C:\Users\Admin\Downloads\day26_distributions (1).csv")
+
+numeric_columns = df.select_dtypes(include="number")
+
+for column in numeric_columns:
+    plt.figure()
+    sns.histplot(df[column], kde=True)
+    plt.show()
+
+for column in numeric_columns:
+    print("Column:", column)
+    print("Mean:", df[column].mean())
+    print("Median:", df[column].median())
+    print("Std:", df[column].std())
+    print("Skew:", df[column].skew())
+
+skewed_column = numeric_columns.columns[0]
+
+df[skewed_column + "_log"] = np.log1p(df[skewed_column])
+
+plt.figure()
+sns.histplot(df[skewed_column + "_log"], kde=True)
+plt.show()
